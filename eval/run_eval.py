@@ -3,7 +3,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from eval.judge import judge_brief
-from eval.trajectory_checks import check_trajectory
+from src.graph.checks import check_trajectory
 from src.graph.trace import run_with_trajectory
 
 QUESTIONS_FILE = Path("eval/eval_questions.jsonl")
