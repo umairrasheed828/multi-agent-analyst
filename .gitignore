@@ -19,3 +19,5 @@ wheels/
 
 # Local data
 data/
+
+eval/results.jsonl
