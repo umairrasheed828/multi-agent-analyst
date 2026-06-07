@@ -20,6 +20,34 @@ Each worker returns control to the supervisor, which re-decides the next step un
 - **Independent verification** — the verifier runs its *own* web search instead of trusting the researcher, labelling each claim `[SUPPORTED] / [UNVERIFIED] / [CONTRADICTED]`.
 - **Calibrated output** — every brief ends with an explicit confidence note.
 
+## Evaluation
+
+The system is evaluated on both the **process** (did it behave reliably?) and the **outcome** (is the brief good?) — and the quality judge itself is **calibrated** against human labels.
+
+**Process — deterministic reliability checks** over an 8-question set (`eval/run_eval.py`). Every run is checked, with no LLM needed:
+
+| check | pass rate |
+|---|---|
+| researched before verified | 8/8 |
+| verified before wrote | 8/8 |
+| brief includes a confidence note | 8/8 |
+| research tool succeeded | 8/8 |
+
+**Outcome — LLM-as-judge** scores each brief on faithfulness and relevance (1–5).
+
+**Judge calibration** (`eval/calibrate.py`) — the judge is held to human-labelled cases that include deliberately flawed briefs. The initial judge conflated faithfulness errors with relevance; separating the axes in the rubric fixed it:
+
+| axis | MAE before | MAE after | exact agreement |
+|---|---|---|---|
+| relevance | 1.00 | **0.20** | 40% → 80% |
+| faithfulness | 0.40 | 0.40 | 60% |
+
+Reproduce: `uv run python -m eval.run_eval` then `uv run python -m eval.calibrate`.
+
+## Status
+
+Phase 1 (multi-agent graph) and Phase 2 (trajectory + calibrated evaluation) complete. Phase 3 (serve + deploy) next.
+
 ## Quickstart
 
     uv sync
@@ -29,7 +57,3 @@ Each worker returns control to the supervisor, which re-decides the next step un
 ## Tech
 
 Python 3.12 · LangGraph · LangChain · OpenAI gpt-4o-mini · DuckDuckGo search. Quality gates: ruff, mypy, pytest, GitHub Actions CI.
-
-## Status
-
-Phase 1 (multi-agent graph) complete. Phase 2 (trajectory & reliability evaluation) in progress.
