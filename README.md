@@ -44,9 +44,15 @@ The system is evaluated on both the **process** (did it behave reliably?) and th
 
 Reproduce: `uv run python -m eval.run_eval` then `uv run python -m eval.calibrate`.
 
+
+## Deployment
+
+Containerized with Docker and deployed on AWS EC2. Every push to `main` runs the test suite, then auto-deploys over SSH via GitHub Actions. The API serves at port 8000 (`/docs` for the interactive Swagger UI). A live instance is run on demand and shared on request.
+
 ## Status
 
-Phase 1 (multi-agent graph) and Phase 2 (trajectory + calibrated evaluation) complete. Phase 3 (serve + deploy) next.
+Complete: multi-agent graph (Phase 1), trajectory + calibrated evaluation (Phase 2), and a Dockerized FastAPI service auto-deployed to AWS via CI/CD (Phase 3).
+
 
 ## Quickstart
 
