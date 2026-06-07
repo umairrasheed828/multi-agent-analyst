@@ -27,5 +27,5 @@ pythonpath = ["."]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["ddgs.*"]
+module = ["ddgs.*", "langgraph.*"]
 ignore_missing_imports = true
