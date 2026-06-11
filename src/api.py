@@ -15,6 +15,7 @@ class AskResponse(BaseModel):
     brief: str
     path: list[str]
     checks: dict[str, bool]
+    context: str = ""  # NEW: the verified_notes the writer used (faithfulness source)
 
 
 @app.get("/health")
@@ -32,4 +33,5 @@ def ask(req: AskRequest) -> AskResponse:
         brief=str(state.get("brief", "")),
         path=[s.node for s in trajectory],
         checks=check_trajectory(state, trajectory),
+        context=str(state.get("verified_notes", "")),  # NEW
     )
